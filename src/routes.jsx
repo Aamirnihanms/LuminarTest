@@ -5,10 +5,12 @@ import {
   InformationCircleIcon,
   ServerStackIcon,
   RectangleStackIcon,
+  DevicePhoneMobileIcon,
 } from "@heroicons/react/24/solid";
 import { Home, Profile, Tables, Notifications } from "@/pages/dashboard";
 import { SignIn, SignUp } from "@/pages/auth";
 import Batches from "./pages/dashboard/Batches";
+import DeviceChange from "./pages/dashboard/DeviceChange";
 
 const icon = {
   className: "w-5 h-5 text-inherit",
@@ -29,6 +31,12 @@ export const routes = [
         name: "batches",
         path: "/batches",
         element: <Batches />,
+      },
+      {
+        icon: <DevicePhoneMobileIcon {...icon} />,
+        name: "device change",
+        path: "/device-change",
+        element: <DeviceChange />,
       },
       // {
       //   icon: <UserCircleIcon {...icon} />,

@@ -4,7 +4,7 @@ import { XMarkIcon } from '@heroicons/react/24/solid';
 
 const QrDisplayPage = ({ name, id, onClose }) => {
   const [qrData, setQrData] = useState({});
-  const [countdown, setCountdown] = useState(7);
+  // const [countdown, setCountdown] = useState(7);
 
   const generateQrData = () => {
     const startTime = new Date(Date.now());
@@ -18,7 +18,7 @@ const QrDisplayPage = ({ name, id, onClose }) => {
     };
 
     setQrData(data);
-    setCountdown(7);
+    // setCountdown(7);
   };
 
   useEffect(() => {
@@ -28,14 +28,14 @@ const QrDisplayPage = ({ name, id, onClose }) => {
       generateQrData();
     }, 7000);
 
-    const countdownInterval = setInterval(() => {
-      setCountdown(prev => (prev > 0 ? prev - 1 : 7));
-    }, 1000);
+    // const countdownInterval = setInterval(() => {
+    //   setCountdown(prev => (prev > 0 ? prev - 1 : 7));
+    // }, 1000);
 
-    return () => {
-      clearInterval(interval);
-      clearInterval(countdownInterval);
-    };
+    // return () => {
+    //   clearInterval(interval);
+    //   clearInterval(countdownInterval);
+    // };
   }, [id]);
 
   return (

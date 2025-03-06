@@ -412,80 +412,82 @@ const Batches = () => {
               />
             </div>
             
-            <div className="overflow-x-auto">
-              <table className="w-full min-w-max table-auto text-left">
-                <thead>
-                  <tr>
-                    {["Batch Name","Start Date", "End Date", "Location", "Status"].map((head) => (
-                      <th key={head} className="border-b border-blue-gray-100 bg-blue-gray-50 p-4">
-                        <Typography
-                          variant="small"
-                          color="blue-gray"
-                          className="font-normal leading-none opacity-70"
-                        >
-                          {head}
-                        </Typography>
-                      </th>
-                    ))}
-                  </tr>
-                </thead>
-                <tbody>
-                  {filteredBatches.length > 0 ? (
-                    filteredBatches.map((batch, index) => {
-                      const isLast = index === filteredBatches.length - 1;
-                      const classes = isLast ? "p-4" : "p-4 border-b border-blue-gray-50";
-                      
-                      return (
-                        <tr 
-                          key={batch.id} 
-                          className="hover:bg-blue-gray-50 cursor-pointer transition-colors"
-                          onClick={() => handleRowClick(batch)}
-                        >
-                          <td className={classes}>
-                            <Typography variant="small" color="blue-gray" className="font-semibold">
-                              {batch.name || "N/A"}
-                            </Typography>
-                          </td>
-                          <td className={classes}>
-                            <Typography variant="small" color="blue-gray" className="font-normal">
-                              {formatDate(batch.startDate)}
-                            </Typography>
-                          </td>
-                          <td className={classes}>
-                            <Typography variant="small" color="blue-gray" className="font-normal">
-                              {formatDate(batch.endDate)}
-                            </Typography>
-                          </td>
-                          <td className={classes}>
-                            <Typography variant="small" color="blue-gray" className="font-normal">
-                              {batch.batchLocation ? batch.batchLocation.label : "N/A"}
-                            </Typography>
-                          </td>
-                          <td className={classes}>
-                            <div className="w-max">
-                              <Chip
-                                size="sm"
-                                variant="ghost"
-                                color={getStatusColor(batch.status)}
-                                value={batch.status || "unknown"}
-                              />
-                            </div>
-                          </td>
-                        </tr>
-                      );
-                    })
-                  ) : (
+           <div className='overflow-hidden max-h-[400x]'>
+              <div className="overflow-auto max-h-[400px]">
+                <table className="w-full min-w-max table-auto text-left">
+                  <thead>
                     <tr>
-                      <td colSpan="5" className="p-4 text-center">
-                        <Typography variant="small" color="blue-gray">
-                          {batches.length > 0 ? "No matching batches found" : "Loading batches..."}
-                        </Typography>
-                      </td>
+                      {["Batch Name","Start Date", "End Date", "Location", "Status"].map((head) => (
+                        <th key={head} className="sticky top-0 z-10 border-b border-blue-gray-100 bg-blue-gray-50 p-4">
+                          <Typography
+                            variant="small"
+                            color="blue-gray"
+                            className="font-normal leading-none opacity-70"
+                          >
+                            {head}
+                          </Typography>
+                        </th>
+                      ))}
                     </tr>
-                  )}
-                </tbody>
-              </table>
-            </div>
+                  </thead>
+                  <tbody>
+                    {filteredBatches.length > 0 ? (
+                      filteredBatches.map((batch, index) => {
+                        const isLast = index === filteredBatches.length - 1;
+                        const classes = isLast ? "p-4" : "p-4 border-b border-blue-gray-50";
+                        
+                        return (
+                          <tr 
+                            key={batch.id} 
+                            className="hover:bg-blue-gray-50 cursor-pointer transition-colors"
+                            onClick={() => handleRowClick(batch)}
+                          >
+                            <td className={classes}>
+                              <Typography variant="small" color="blue-gray" className="font-semibold">
+                                {batch.name || "N/A"}
+                              </Typography>
+                            </td>
+                            <td className={classes}>
+                              <Typography variant="small" color="blue-gray" className="font-normal">
+                                {formatDate(batch.startDate)}
+                              </Typography>
+                            </td>
+                            <td className={classes}>
+                              <Typography variant="small" color="blue-gray" className="font-normal">
+                                {formatDate(batch.endDate)}
+                              </Typography>
+                            </td>
+                            <td className={classes}>
+                              <Typography variant="small" color="blue-gray" className="font-normal">
+                                {batch.batchLocation ? batch.batchLocation.label : "N/A"}
+                              </Typography>
+                            </td>
+                            <td className={classes}>
+                              <div className="w-max">
+                                <Chip
+                                  size="sm"
+                                  variant="ghost"
+                                  color={getStatusColor(batch.status)}
+                                  value={batch.status || "unknown"}
+                                />
+                              </div>
+                            </td>
+                          </tr>
+                        );
+                      })
+                    ) : (
+                      <tr>
+                        <td colSpan="5" className="p-4 text-center">
+                          <Typography variant="small" color="blue-gray">
+                            {batches.length > 0 ? "No matching batches found" : "Loading batches..."}
+                          </Typography>
+                        </td>
+                      </tr>
+                    )}
+                  </tbody>
+                </table>
+              </div>
+           </div>
           </CardBody>
         </Card>
       )}

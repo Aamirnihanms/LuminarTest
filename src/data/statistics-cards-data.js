@@ -9,8 +9,8 @@ export const statisticsCardsData = [
   {
     color: "gray",
     icon: BanknotesIcon,
-    title: "Today's Money",
-    value: "$53k",
+    title: "Total Batch",
+    value: "120",
     footer: {
       color: "text-green-500",
       value: "+55%",
@@ -20,7 +20,7 @@ export const statisticsCardsData = [
   {
     color: "gray",
     icon: UsersIcon,
-    title: "Today's Users",
+    title: "Total Students",
     value: "2,300",
     footer: {
       color: "text-green-500",
@@ -31,8 +31,8 @@ export const statisticsCardsData = [
   {
     color: "gray",
     icon: UserPlusIcon,
-    title: "New Clients",
-    value: "3,462",
+    title: "Total Course",
+    value: "15",
     footer: {
       color: "text-red-500",
       value: "-2%",
@@ -42,8 +42,8 @@ export const statisticsCardsData = [
   {
     color: "gray",
     icon: ChartBarIcon,
-    title: "Sales",
-    value: "$103,430",
+    title: "Total Trainers",
+    value: "50",
     footer: {
       color: "text-green-500",
       value: "+5%",

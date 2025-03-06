@@ -19,7 +19,7 @@ const AttendanceTable = ({ batchDataDetails, setParentLoading }) => {
   const [batchData, setBatchData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  
+
 
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
@@ -40,7 +40,7 @@ const AttendanceTable = ({ batchDataDetails, setParentLoading }) => {
       setLoading(true);
 
       try {
-        const data = await fetchAttendanceApi(attendanceBatchDataId); 
+        const data = await fetchAttendanceApi(attendanceBatchDataId);
         setBatchData(data);
         const dates = extractDatesFromData(data);
         setAvailableDates(dates);
@@ -60,34 +60,34 @@ const AttendanceTable = ({ batchDataDetails, setParentLoading }) => {
 
   const extractDatesFromData = (data) => {
     if (!data || !data.attendance) return [];
-    
+
     const allDates = new Set();
-    
+
     data.attendance.forEach(student => {
       student.attendance.forEach(record => {
         allDates.add(record.date);
       });
     });
-    
+
 
     const sortedDates = Array.from(allDates).sort((a, b) => new Date(b) - new Date(a));
-    
+
 
     if (!startDate && sortedDates.length > 0) {
       setStartDate(sortedDates[sortedDates.length - 1]);
     }
     if (!endDate && sortedDates.length > 0) {
-      setEndDate(sortedDates[0]); 
+      setEndDate(sortedDates[0]);
     }
-    
+
     return sortedDates;
   };
 
- 
+
   const handleApplyDateFilter = (start, end) => {
     setStartDate(start);
     setEndDate(end);
-    
+
     if (!start || !end) {
       setFilteredDates(availableDates);
       return;
@@ -127,7 +127,7 @@ const AttendanceTable = ({ batchDataDetails, setParentLoading }) => {
   const updateAttendanceRecord = (student, date, status, remark) => {
     setBatchData(prevData => {
       if (!prevData) return prevData;
-      
+
       const newData = { ...prevData };
       const studentData = newData.attendance.find(s => s.student_id === student.student_id);
 
@@ -171,6 +171,15 @@ const AttendanceTable = ({ batchDataDetails, setParentLoading }) => {
   const StatusDisplay = ({ student, date, status, remark }) => {
     let classes = "inline-flex items-center justify-center px-2 py-1 rounded-md text-xs font-medium cursor-pointer w-full mx-auto ";
 
+
+    const statusDisplayMap = {
+      present: "Present",
+      absent: "Absent",
+      unavailable: "Unavailable"
+    };
+
+    const displayStatus = statusDisplayMap[status] || "Unavailable";
+
     switch (status) {
       case "present":
         classes += "bg-green-100 text-green-800 hover:bg-green-200";
@@ -183,12 +192,12 @@ const AttendanceTable = ({ batchDataDetails, setParentLoading }) => {
     }
 
     return (
-      <Tooltip content={status === "absent" ? `${status}: ${remark || "No remark"}` : status}>
+      <Tooltip content={status === "absent" ? `${displayStatus}: ${remark || "No remark"}` : displayStatus}>
         <div
           className={classes}
           onClick={() => handleStatusToggle(student, date, status)}
         >
-          {status === "unavailable" ? "Mark" : status}
+          {displayStatus === "Unavailable" ? "Mark" : displayStatus}
         </div>
       </Tooltip>
     );
@@ -218,12 +227,12 @@ const AttendanceTable = ({ batchDataDetails, setParentLoading }) => {
             <Typography variant="h4" color="blue-gray" className="font-bold">
               Attendance
             </Typography>
-            
+
             <div className="flex flex-col md:flex-row gap-4 w-full md:w-auto">
               {/* Date filter button */}
-              <Button 
-                variant="outlined" 
-                className="flex items-center gap-2" 
+              <Button
+                variant="outlined"
+                className="flex items-center gap-2"
                 onClick={() => setIsFilterOpen(true)}
                 color="blue-gray"
               >
@@ -231,11 +240,11 @@ const AttendanceTable = ({ batchDataDetails, setParentLoading }) => {
                 <span>Date Filter</span>
                 <FunnelIcon className="h-4 w-4" />
               </Button>
-              
+
               {/* Search input */}
               <div className="w-full md:w-64">
-                <Input 
-                  label="Search Students" 
+                <Input
+                  label="Search Students"
                   icon={<MagnifyingGlassIcon className="h-5 w-5" />}
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
@@ -244,7 +253,7 @@ const AttendanceTable = ({ batchDataDetails, setParentLoading }) => {
               </div>
             </div>
           </div>
-          
+
           {/* Show active filter indication */}
           {(startDate || endDate) && (
             <div className="flex items-center gap-2 text-sm text-blue-gray-600 mb-2">
@@ -252,10 +261,10 @@ const AttendanceTable = ({ batchDataDetails, setParentLoading }) => {
               <span>
                 Showing dates: {startDate ? formatDate(startDate) : "Start"} - {endDate ? formatDate(endDate) : "End"}
               </span>
-              <Button 
-                variant="text" 
-                size="sm" 
-                color="red" 
+              <Button
+                variant="text"
+                size="sm"
+                color="red"
                 className="p-1 h-6"
                 onClick={resetDateFilter}
               >
@@ -265,59 +274,68 @@ const AttendanceTable = ({ batchDataDetails, setParentLoading }) => {
           )}
         </div>
 
-        <div className="relative overflow-x-auto">
-          <table className="min-w-full divide-y divide-gray-200">
-            <thead className="bg-gray-50">
-              <tr>
-                <th className="sticky left-0 z-20 bg-gray-50 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-r">
-                  Student Name
-                </th>
-                {filteredDates.map(date => (
-                  <th key={date} className="px-3 py-2 text-xs font-medium text-gray-500 uppercase tracking-wider text-center">
-                    {formatDate(date)}
+        <div className="relative overflow-hidden max-h-[600px]">
+          <div className="overflow-auto max-h-[600px]">
+            <table className="min-w-full divide-y divide-gray-200">
+              <thead className="bg-gray-50">
+                <tr>
+                  
+                  <th className="sticky top-0 left-0 z-30 bg-gray-50 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-r border-b">
+                    Student Name
                   </th>
-                ))}
-              </tr>
-            </thead>
-            <tbody className="bg-white divide-y divide-gray-200">
-              {filteredStudents.map(student => (
-                <tr key={student.student_id}>
-                  <td className="sticky left-0 z-10 bg-white px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 border-r">
-                    {student.student_name}
-                  </td>
-                  {filteredDates.map(date => {
-                    const record = getAttendanceRecord(student, date);
-                    return (
-                      <td key={`${student.student_id}-${date}`} className="px-3 py-2 text-center">
-                        <div className="flex justify-center">
-                          <StatusDisplay
-                            student={student}
-                            date={date}
-                            status={record.status}
-                            remark={record.remark}
-                          />
-                        </div>
-                      </td>
-                    );
-                  })}
+              
+                  {filteredDates.map(date => (
+                    <th
+                      key={date}
+                      className="sticky top-0 z-20 bg-gray-50 px-3 py-2 text-xs font-medium text-gray-500 uppercase tracking-wider text-center border-b"
+                    >
+                      {formatDate(date)}
+                    </th>
+                  ))}
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody className="bg-white divide-y divide-gray-200">
+                {filteredStudents.map(student => (
+                  <tr key={student.student_id}>
+                    {/* This cell is sticky horizontally */}
+                    <td className="sticky left-0 z-10 bg-white px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 border-r">
+                      {student.student_name}
+                    </td>
+                    {/* Regular cells */}
+                    {filteredDates.map(date => {
+                      const record = getAttendanceRecord(student, date);
+                      return (
+                        <td key={`${student.student_id}-${date}`} className="px-3 py-2 text-center">
+                          <div className="flex justify-center">
+                            <StatusDisplay
+                              student={student}
+                              date={date}
+                              status={record.status}
+                              remark={record.remark}
+                            />
+                          </div>
+                        </td>
+                      );
+                    })}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
       </Card>
 
       {/* Remark Dialog - Extracted to separate component */}
-      <AttendanceRemarkDialog 
-        isOpen={isEditOpen} 
-        onClose={() => setIsEditOpen(false)} 
-        onSave={handleSaveRemark} 
+      <AttendanceRemarkDialog
+        isOpen={isEditOpen}
+        onClose={() => setIsEditOpen(false)}
+        onSave={handleSaveRemark}
         remarkData={currentRemark}
         formatDate={formatDate}
       />
 
       {/* Date Filter Dialog - Extracted to separate component */}
-      <DateFilterDialog 
+      <DateFilterDialog
         isOpen={isFilterOpen}
         onClose={() => setIsFilterOpen(false)}
         onApply={handleApplyDateFilter}

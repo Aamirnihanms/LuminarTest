@@ -37,4 +37,14 @@ export const fetchBatchesApi = async (token) => {
   };
 
 
+  export const fetchDeviceChangeApi = async () => {
+    try {
+      const response = await api2.get(`/list/device/`);
+      return response.data;
+    } catch (error) {
+      throw error;
+    }
+  };
+
+
  

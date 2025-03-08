@@ -27,9 +27,14 @@ export const fetchBatchesApi = async (token) => {
   };
 
 
-  export const fetchAttendanceApi = async (attendanceBatchDataId) => {
+  export const fetchAttendanceApi = async (attendanceBatchDataId, fromDate, toDate) => {
     try {
-      const response = await api2.get(`/attendance/batch/${attendanceBatchDataId}/`);
+      const response = await api2.get(`/attendance/batch/${attendanceBatchDataId}/`, {
+        params: {
+          from_date: fromDate,
+          to_date: toDate
+        }
+      });
       return response.data;
     } catch (error) {
       throw error;
@@ -37,14 +42,52 @@ export const fetchBatchesApi = async (token) => {
   };
 
 
-  export const fetchDeviceChangeApi = async () => {
+  export const fetchDeviceChangeApi = async (page = 1, page_size = 10) => {
     try {
-      const response = await api2.get(`/list/device/`);
+      const response = await api2.get(`/list/device/`, {
+        params: { page, page_size }
+      });
       return response.data;
     } catch (error) {
       throw error;
     }
   };
+
+
+  export const ApproveDeviceChangeApi = async (studentId) => {
+    try {
+      const response = await api2.get(`/device/approve/${studentId}/`);
+      return response.data;
+    } catch (error) {
+      throw error;
+    }
+  };
+
+
+  export const disaApproveDeviceChangeApi = async (studentId) => {
+    try {
+      const response = await api2.delete(`/device-change-requests/${studentId}/`);
+      return response.data;
+    } catch (error) {
+      throw error;
+    }
+  };
+
+
+  export const processApi = async (batchid,token) => {
+    try {
+      console.log("token available",token)
+      const response = await api2.get(`/process/attendance/batch?batch_id=${batchid}`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+        
+      );
+      return response.data;
+    } catch (error) {
+      throw error;
+    }
+  }
 
 
  

@@ -43,95 +43,99 @@ const DateFilterDialog = ({
   };
 
   const handleReset = () => {
-    setLocalStartDate('');
-    setLocalEndDate('');
     onReset();
     onClose();
   };
 
+
   const setLastSevenDays = () => {
-    if (availableDates && availableDates.length > 0) {
-      const end = new Date(availableDates[0]);
-      const start = new Date(end);
-      start.setDate(start.getDate() - 7);
-      setLocalStartDate(start.toISOString().split('T')[0]);
-      setLocalEndDate(end.toISOString().split('T')[0]);
-    }
+    const end = new Date();
+    const start = new Date();
+    start.setDate(start.getDate() - 7);
+    setLocalStartDate(start.toISOString().split('T')[0]);
+    setLocalEndDate(end.toISOString().split('T')[0]);
   };
 
   const setLastThirtyDays = () => {
-    if (availableDates && availableDates.length > 0) {
-      const end = new Date(availableDates[0]);
-      const start = new Date(end);
-      start.setDate(start.getDate() - 30);
-      setLocalStartDate(start.toISOString().split('T')[0]);
-      setLocalEndDate(end.toISOString().split('T')[0]);
-    }
+    const end = new Date();
+    const start = new Date();
+    start.setDate(start.getDate() - 30);
+    setLocalStartDate(start.toISOString().split('T')[0]);
+    setLocalEndDate(end.toISOString().split('T')[0]);
   };
 
   const setCurrentMonth = () => {
-    if (availableDates && availableDates.length > 0) {
-      const today = new Date(availableDates[0]);
-      const start = new Date(today.getFullYear(), today.getMonth(), 1);
-      setLocalStartDate(start.toISOString().split('T')[0]);
-      setLocalEndDate(today.toISOString().split('T')[0]);
-    }
+    const today = new Date();
+    const start = new Date(today.getFullYear(), today.getMonth(), 1);
+    setLocalStartDate(start.toISOString().split('T')[0]);
+    setLocalEndDate(today.toISOString().split('T')[0]);
   };
 
   const setPreviousMonth = () => {
-    if (availableDates && availableDates.length > 0) {
-      const today = new Date(availableDates[0]);
-      const start = new Date(today.getFullYear(), today.getMonth() - 1, 1);
-      const end = new Date(today.getFullYear(), today.getMonth(), 0);
-      setLocalStartDate(start.toISOString().split('T')[0]);
-      setLocalEndDate(end.toISOString().split('T')[0]);
-    }
+    const today = new Date();
+    const start = new Date(today.getFullYear(), today.getMonth() - 1, 1);
+    const end = new Date(today.getFullYear(), today.getMonth(), 0);
+    setLocalStartDate(start.toISOString().split('T')[0]);
+    setLocalEndDate(end.toISOString().split('T')[0]);
   };
 
   return (
     <Dialog size="xs" open={isOpen} handler={onClose}>
-      <DialogHeader>Filter Attendance by Date Range</DialogHeader>
-      <DialogBody>
-        <div className="space-y-4">
-          <div>
-            <Typography variant="small" color="blue-gray" className="mb-2 font-medium">
-              Start Date
-            </Typography>
-            <Input
-              type="date"
-              value={formatDateForInput(localStartDate)}
-              onChange={(e) => setLocalStartDate(e.target.value)}
-              className="!border-t-blue-gray-200 focus:!border-t-blue-500"
-              labelProps={{
-                className: "before:content-none after:content-none",
-              }}
-            />
-          </div>
-          <div>
-            <Typography variant="small" color="blue-gray" className="mb-2 font-medium">
-              End Date
-            </Typography>
-            <Input
-              type="date"
-              value={formatDateForInput(localEndDate)}
-              onChange={(e) => setLocalEndDate(e.target.value)}
-              className="!border-t-blue-gray-200 focus:!border-t-blue-500"
-              labelProps={{
-                className: "before:content-none after:content-none",
-              }}
-            />
+      <DialogHeader className="border-b pb-3">
+        <Typography variant="h5" color="blue-gray">
+          Filter Attendance by Date Range
+        </Typography>
+      </DialogHeader>
+      <DialogBody className="pt-4">
+        <div className="space-y-6">
+          <div className="space-y-4">
+            <div>
+              <Typography variant="small" color="blue-gray" className="mb-2 font-medium">
+                Start Date
+              </Typography>
+              <Input
+                type="date"
+                value={formatDateForInput(localStartDate)}
+                onChange={(e) => setLocalStartDate(e.target.value)}
+                className="!border !border-gray-300 focus:!border-gray-500"
+                containerProps={{
+                  className: "min-w-full"
+                }}
+                labelProps={{
+                  className: "before:content-none after:content-none",
+                }}
+              />
+            </div>
+            <div>
+              <Typography variant="small" color="blue-gray" className="mb-2 font-medium">
+                End Date
+              </Typography>
+              <Input
+                type="date"
+                value={formatDateForInput(localEndDate)}
+                onChange={(e) => setLocalEndDate(e.target.value)}
+                className="!border !border-gray-300 focus:!border-gray-500"
+                containerProps={{
+                  className: "min-w-full"
+                }}
+                labelProps={{
+                  className: "before:content-none after:content-none",
+                }}
+              />
+            </div>
           </div>
 
           {/* Quick selection options */}
           <div>
-            <Typography variant="small" color="blue-gray" className="mb-2 font-medium">
+            <Typography variant="small" color="blue-gray" className="mb-3 font-medium">
               Quick Select
             </Typography>
-            <div className="flex flex-wrap gap-2">
+            <div className="flex flex-wrap gap-2 justify-center sm:justify-start">
               <Button 
                 size="sm" 
                 variant="outlined" 
                 onClick={setLastSevenDays}
+                className="normal-case"
               >
                 Last 7 Days
               </Button>
@@ -139,6 +143,7 @@ const DateFilterDialog = ({
                 size="sm" 
                 variant="outlined" 
                 onClick={setLastThirtyDays}
+                className="normal-case"
               >
                 Last 30 Days
               </Button>
@@ -146,6 +151,7 @@ const DateFilterDialog = ({
                 size="sm" 
                 variant="outlined" 
                 onClick={setCurrentMonth}
+                className="normal-case"
               >
                 This Month
               </Button>
@@ -153,6 +159,7 @@ const DateFilterDialog = ({
                 size="sm" 
                 variant="outlined" 
                 onClick={setPreviousMonth}
+                className="normal-case"
               >
                 Last Month
               </Button>
@@ -160,7 +167,7 @@ const DateFilterDialog = ({
           </div>
         </div>
       </DialogBody>
-      <DialogFooter className="space-x-2">
+      <DialogFooter className="space-x-2 pt-2 border-t">
         <Button variant="outlined" color="gray" onClick={onClose}>
           Cancel
         </Button>

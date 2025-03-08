@@ -6,28 +6,32 @@ import {
   DialogFooter,
   Button,
   Textarea,
-  Typography
+  Typography,
+  Input
 } from '@material-tailwind/react';
 
 const AttendanceRemarkDialog = ({ isOpen, onClose, onSave, remarkData, formatDate }) => {
-
   const [localRemark, setLocalRemark] = useState('');
   const [localStatus, setLocalStatus] = useState('');
-
+  const [localLocation, setLocalLocation] = useState('');
 
   useEffect(() => {
     if (isOpen && remarkData) {
       setLocalRemark(remarkData.remark || '');
       setLocalStatus(remarkData.status || '');
+      setLocalLocation(remarkData.location || '');
     }
+    console.log("test",remarkData)
   }, [isOpen, remarkData]);
+
 
   const handleSave = () => {
     // Only send updated data back to parent when save is clicked
     onSave({
       ...remarkData,
       remark: localRemark,
-      status: localStatus
+      status: localStatus,
+      location: localLocation
     });
   };
 
@@ -59,10 +63,7 @@ const AttendanceRemarkDialog = ({ isOpen, onClose, onSave, remarkData, formatDat
                   size="sm"
                   color={localStatus === "present" ? "green" : "gray"}
                   variant={localStatus === "present" ? "filled" : "outlined"}
-                  onClick={() => {
-                    setLocalStatus("present");
-                    setLocalRemark(''); // Clear remark when present
-                  }}
+                  onClick={() => setLocalStatus("present")}
                 >
                   Present
                 </Button>
@@ -70,13 +71,22 @@ const AttendanceRemarkDialog = ({ isOpen, onClose, onSave, remarkData, formatDat
                   size="sm"
                   color={localStatus === "absent" ? "red" : "gray"}
                   variant={localStatus === "absent" ? "filled" : "outlined"}
-                  onClick={() => setLocalStatus("absent")}
+                  onClick={() => {
+                    setLocalStatus("absent");
+                    setLocalLocation(''); 
+                  }}
                 >
                   Absent
                 </Button>
               </div>
             </div>
           </div>
+          {localStatus === "present" && (
+            <Typography variant="body1" className="text-gray-700 font-medium">
+            Location: {localLocation || "Not Available"}
+          </Typography>
+          
+          )}
           {localStatus === "absent" && (
             <Textarea
               label="Remark"
@@ -95,7 +105,8 @@ const AttendanceRemarkDialog = ({ isOpen, onClose, onSave, remarkData, formatDat
         <Button
           color="blue"
           onClick={handleSave}
-          disabled={localStatus === "absent" && !localRemark.trim()}
+          disabled={(localStatus === "absent" && !localRemark.trim()) || 
+                   (localStatus === "present" && !localLocation.trim())}
         >
           Save Changes
         </Button>

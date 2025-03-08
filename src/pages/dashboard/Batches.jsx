@@ -392,6 +392,7 @@ const Batches = () => {
           <AttendanceTable 
       batchDataDetails={attendanceBatchData} 
       setParentLoading={setIsloading} 
+      batchName={attendanceBatchData.name}
     />
         </div>
       ) : (
@@ -479,7 +480,7 @@ const Batches = () => {
                       <tr>
                         <td colSpan="5" className="p-4 text-center">
                           <Typography variant="small" color="blue-gray">
-                            {batches.length > 0 ? "No matching batches found" : "Loading batches..."}
+                            {filteredBatches.length === 0 ? "currently no batches found" : "Loading batches..."}
                           </Typography>
                         </td>
                       </tr>
